@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Anubis</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* Estilos básicos para mensajes */
+      #mensaje,
+      #mensajeListado,
+      #mensajeEliminarContenedor {
+        margin: 10px 0;
+        padding: 8px 12px;
+        border-radius: 4px;
+        display: none;
+      }
+      .exito {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+      .error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+      .info {
+        background-color: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+      /* Ocultar por defecto */
+      .hidden {
+        display: none;
+      }
+      /* Para las tablas */
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      button {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>Anubis</header>
+
+    <nav>
+      <button onclick="mostrarVista('formulario')">Agregar Producto</button>
+      <button onclick="mostrarVista('listado')">Ver Listado</button>
+    </nav>
+
+    <section id="vistaFormulario">
+      <h2 style="text-decoration: underline">Agregar Producto</h2>
+
+      <div id="mensaje"></div>
+
+      <form id="zapatillaForm">
+        <div class="form-row">
+          <div>
+            <label for="modelo">Modelo</label>
+            <input type="text" id="modelo" required />
+          </div>
+          <div>
+            <label for="color">Color</label>
+            <input type="text" id="color" required />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="talleDesde">Talles Desde</label>
+            <input type="number" id="talleDesde" min="20" max="55" value="30" />
+          </div>
+          <div>
+            <label for="talleHasta">Talles Hasta</label>
+            <input type="number" id="talleHasta" min="20" max="55" value="42" />
+          </div>
+          <div>
+            <label for="sinTalle"
+              >Talles no disponibles (separados por coma)</label
+            >
+            <input type="text" id="sinTalle" placeholder="Ej: 36,39" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label for="costo">Costo ($)</label>
+            <input type="number" id="costo" min="0" step="0.01" required />
+          </div>
+          <div>
+            <label for="envio">Envío ($)</label>
+            <input type="number" id="envio" min="0" step="0.01" required />
+          </div>
+          <div>
+            <label for="porcVenta">% Venta</label>
+            <input
+              type="number"
+              id="porcVenta"
+              min="0"
+              max="100"
+              step="0.01"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label style="color: green">Ganancia ($)</label>
+            <div id="ganancia" style="color: green; font-weight: bold">
+              $0.00
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="form-row"
+          style="align-items: flex-end; justify-content: space-between"
+        >
+          <div style="flex: 1; margin-right: 20px">
+            <label for="imagen">Imagen (subir)</label>
+            <input type="file" id="imagen" accept="image/*" required />
+          </div>
+
+          <div style="text-align: right">
+            <label style="font-size: 18px; font-weight: bold"
+              >Precio de Venta</label
+            >
+            <div
+              id="precioVenta"
+              style="font-size: 28px; font-weight: bold; color: #333"
+            >
+              $0.00
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" style="margin-top: 20px; padding: 10px">
+          Agregar Producto
+        </button>
+      </form>
+    </section>
+
+    <section id="vistaListado" class="hidden">
+      <h2 id="tituloListado">Listado de productos</h2>
+
+      <div id="mensajeListado"></div>
+      <!-- Mensajes aquí -->
+
+      <div id="mensajeEliminarContenedor"></div>
+
+      <table id="tablaZapatillas">
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Color</th>
+            <th>Talles</th>
+            <th>Costo</th>
+            <th>Envío</th>
+            <th>% Venta</th>
+            <th>Ganancia</th>
+            <th>Precio</th>
+            <th>Imagen</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tablaBody"></tbody>
+      </table>
+    </section>
+
+    <script src="app.js"></script>
+  </body>
+</html>

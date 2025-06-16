@@ -1,0 +1,168 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #111;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 32px;
+}
+nav {
+  background: #222;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+nav button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+}
+nav button:hover {
+  background: #666;
+}
+section {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+.hidden {
+  display: none;
+}
+input,
+select,
+button {
+  padding: 6px;
+  margin: 5px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 12px;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 20px;
+}
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background: #eee;
+}
+img {
+  max-width: 80px;
+  max-height: 80px;
+}
+.form-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.form-row > div {
+  flex: 1 1 150px;
+}
+#mensaje {
+  margin: 10px 0 20px 0;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  display: none;
+}
+#mensaje.exito {
+  color: green;
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+}
+#mensaje.error {
+  color: red;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+#mensaje.info {
+  color: #004085;
+  background-color: #cce5ff;
+  border: 1px solid #b8daff;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-box {
+  background-color: #222;
+  color: #eee;
+  padding: 25px 30px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 0 15px #ff6600aa;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.modal-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.modal-mensaje {
+  font-size: 18px;
+  margin-bottom: 25px;
+  font-weight: 600;
+}
+
+.modal-btn {
+  cursor: pointer;
+  padding: 10px 20px;
+  margin: 0 8px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.btn-confirmar {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-confirmar:hover {
+  background-color: #1e7e34;
+  transform: scale(1.05);
+}
+
+.btn-cancelar {
+  background-color: #dc3545;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background-color: #a71d2a;
+  transform: scale(1.05);
+}
