@@ -1,4 +1,3 @@
-// Archivo completo actualizado
 const zapatillasKey = "zapatillasData";
 let zapatillas = JSON.parse(localStorage.getItem(zapatillasKey)) || [];
 
@@ -24,6 +23,8 @@ const gananciaDiv = document.getElementById("ganancia");
 const precioVentaDiv = document.getElementById("precioVenta");
 const imagenInput = document.getElementById("imagen");
 const tituloFormulario = vistaFormulario.querySelector("h2");
+
+const inputBusqueda = document.getElementById("inputBusqueda");
 
 let botonCancelar = document.getElementById("cancelarEdicion");
 if (!botonCancelar) {
@@ -57,6 +58,28 @@ function mostrarMensaje(div, texto, tipo = "info") {
     div.style.display = "none";
   }, 3000);
 }
+function mostrarModalConfirmacion(mensaje, callbackConfirmar) {
+  const modal = document.getElementById("modalConfirmacion");
+  const modalMensaje = document.getElementById("modalMensaje");
+  const btnConfirmar = document.getElementById("btnConfirmar");
+  const btnCancelar = document.getElementById("btnCancelar");
+
+  modalMensaje.innerHTML = mensaje;
+  modal.classList.remove("hidden");
+
+  // Limpiar eventos anteriores para evitar múltiples triggers
+  btnConfirmar.onclick = null;
+  btnCancelar.onclick = null;
+
+  btnConfirmar.onclick = () => {
+    modal.classList.add("hidden");
+    callbackConfirmar();
+  };
+
+  btnCancelar.onclick = () => {
+    modal.classList.add("hidden");
+  };
+}
 
 function calcularGananciaYPrecio() {
   const costo = parseFloat(costoInput.value) || 0;
@@ -88,14 +111,33 @@ function guardarEnLocalStorage() {
   localStorage.setItem(zapatillasKey, JSON.stringify(zapatillas));
 }
 
-function mostrarListado() {
+/**
+ * Muestra el listado filtrando por texto (modelo o color)
+ * @param {string} filtro texto para filtrar
+ */
+function mostrarListado(filtro = "") {
   tablaBody.innerHTML = "";
-  if (zapatillas.length === 0) {
-    mostrarMensaje(mensajeListado, "No hay productos cargados.", "info");
+
+  const filtroLower = filtro.toLowerCase();
+
+  const listaFiltrada = zapatillas.filter((prod) => {
+    return (
+      prod.modelo.toLowerCase().includes(filtroLower) ||
+      prod.color.toLowerCase().includes(filtroLower)
+    );
+  });
+
+  if (listaFiltrada.length === 0) {
+    mostrarMensaje(mensajeListado, "No hay productos que coincidan.", "info");
     return;
   }
 
-  zapatillas.forEach((prod, index) => {
+  let totalCosto = 0;
+  let totalEnvio = 0;
+  let totalGanancia = 0;
+  let totalPrecioFinal = 0;
+
+  listaFiltrada.forEach((prod, index) => {
     const tr = document.createElement("tr");
 
     const tdModelo = document.createElement("td");
@@ -151,7 +193,7 @@ function mostrarListado() {
     btnEditar.textContent = "Editar";
     btnEditar.addEventListener("click", () => {
       modoEdicion = true;
-      indiceEdicion = index;
+      indiceEdicion = zapatillas.indexOf(prod);
       cargarProductoEnFormulario(prod);
       mostrarVista("formulario");
       tituloFormulario.textContent = "Editando producto";
@@ -179,11 +221,54 @@ function mostrarListado() {
         }
       );
     });
+
     tdAccion.appendChild(btnEliminar);
 
     tr.appendChild(tdAccion);
     tablaBody.appendChild(tr);
+
+    totalCosto += parseFloat(prod.costo);
+    totalEnvio += parseFloat(prod.envio);
+    totalGanancia += parseFloat(prod.ganancia);
+    totalPrecioFinal += parseFloat(prod.precioFinal);
   });
+
+  // fila totales
+  const trTotal = document.createElement("tr");
+  trTotal.style.fontWeight = "bold";
+  trTotal.style.backgroundColor = "#ddd";
+
+  const tdTotalLabel = document.createElement("td");
+  tdTotalLabel.textContent = "Totales";
+  tdTotalLabel.colSpan = 3; // abarca Modelo, Color, Talles
+  trTotal.appendChild(tdTotalLabel);
+
+  const tdTotalCosto = document.createElement("td");
+  tdTotalCosto.textContent = `$${totalCosto.toFixed(2)}`;
+  trTotal.appendChild(tdTotalCosto);
+
+  const tdTotalEnvio = document.createElement("td");
+  tdTotalEnvio.textContent = `$${totalEnvio.toFixed(2)}`;
+  trTotal.appendChild(tdTotalEnvio);
+
+  const tdVacio = document.createElement("td");
+  trTotal.appendChild(tdVacio); // para % de venta, vacío
+
+  const tdTotalGanancia = document.createElement("td");
+  tdTotalGanancia.textContent = `$${totalGanancia.toFixed(2)}`;
+  trTotal.appendChild(tdTotalGanancia);
+
+  const tdTotalPrecioFinal = document.createElement("td");
+  tdTotalPrecioFinal.textContent = `$${totalPrecioFinal.toFixed(2)}`;
+  trTotal.appendChild(tdTotalPrecioFinal);
+
+  const tdVacio2 = document.createElement("td");
+  trTotal.appendChild(tdVacio2); // para imagen
+
+  const tdVacio3 = document.createElement("td");
+  trTotal.appendChild(tdVacio3); // para acciones
+
+  tablaBody.appendChild(trTotal);
 }
 
 function cargarProductoEnFormulario(prod) {
@@ -273,49 +358,14 @@ zapatillaForm.addEventListener("submit", (e) => {
 
     guardarEnLocalStorage();
     limpiarFormulario();
-    mostrarListado();
+    mostrarListado(inputBusqueda.value);
     mostrarVista("listado");
   });
 });
 
+inputBusqueda.addEventListener("input", () => {
+  mostrarListado(inputBusqueda.value);
+});
+
+// Mostrar listado inicial sin filtro
 mostrarListado();
-function mostrarModalConfirmacion(mensajeHtml, callbackConfirmar) {
-  let modalOverlay = document.createElement("div");
-  modalOverlay.classList.add("modal-overlay");
-
-  let modalBox = document.createElement("div");
-  modalBox.classList.add("modal-box");
-
-  let mensajeElem = document.createElement("div");
-  mensajeElem.classList.add("modal-mensaje");
-  mensajeElem.innerHTML = mensajeHtml;
-
-  // Icono de advertencia arriba del mensaje
-  let iconoWarning = document.createElement("div");
-  iconoWarning.classList.add("modal-icon");
-  iconoWarning.textContent = "⚠️";
-
-  let btnConfirmar = document.createElement("button");
-  btnConfirmar.classList.add("modal-btn", "btn-confirmar");
-  btnConfirmar.innerHTML = "✅ Confirmar";
-
-  let btnCancelar = document.createElement("button");
-  btnCancelar.classList.add("modal-btn", "btn-cancelar");
-  btnCancelar.innerHTML = "❌ Cancelar";
-
-  btnConfirmar.onclick = () => {
-    callbackConfirmar();
-    document.body.removeChild(modalOverlay);
-  };
-
-  btnCancelar.onclick = () => {
-    document.body.removeChild(modalOverlay);
-  };
-
-  modalBox.appendChild(iconoWarning);
-  modalBox.appendChild(mensajeElem);
-  modalBox.appendChild(btnConfirmar);
-  modalBox.appendChild(btnCancelar);
-  modalOverlay.appendChild(modalBox);
-  document.body.appendChild(modalOverlay);
-}

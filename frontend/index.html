@@ -152,34 +152,55 @@
         </button>
       </form>
     </section>
-
+    
     <section id="vistaListado" class="hidden">
+
       <h2 id="tituloListado">Listado de productos</h2>
 
       <div id="mensajeListado"></div>
       <!-- Mensajes aquí -->
 
       <div id="mensajeEliminarContenedor"></div>
+<input
+  type="text"
+  id="inputBusqueda"
+  placeholder="Buscar por modelo o color..."
+  style="margin-bottom: 10px; padding: 6px; width: 100%; max-width: 300px; font-size: 14px;"
+/>
 
       <table id="tablaZapatillas">
         <thead>
           <tr>
-            <th>Modelo</th>
-            <th>Color</th>
-            <th>Talles</th>
-            <th>Costo</th>
-            <th>Envío</th>
-            <th>% Venta</th>
-            <th>Ganancia</th>
-            <th>Precio</th>
-            <th>Imagen</th>
-            <th>Acción</th>
-          </tr>
+         <thead>
+    <tr>
+      <th data-col="modelo">Modelo</th>
+      <th data-col="color">Color</th>
+      <th data-col="talles">Talles</th>
+      <th data-col="costo">Costo</th>
+      <th data-col="envio">Envío</th>
+      <th data-col="porcVenta">%</th>
+      <th data-col="ganancia">Ganancia</th>
+      <th data-col="precioFinal">Precio</th>
+      <th data-col="imagen">Imagen</th>
+      <th>Acciones</th>
+    </tr>
         </thead>
         <tbody id="tablaBody"></tbody>
       </table>
     </section>
 
+    <!-- Modal Confirmación -->
+<div id="modalConfirmacion" class="modal-confirmacion hidden">
+  <div class="modal-contenido">
+    <div class="modal-icono">⚠️</div>
+    <div id="modalMensaje" class="modal-mensaje"></div>  <!-- ESTE elemento debe existir -->
+    <div class="modal-botones">
+      <button id="btnConfirmar" class="btn-confirmar">Confirmar</button>
+      <button id="btnCancelar" class="btn-cancelar">Cancelar</button>
+    </div>
+  </div>
+</div>
     <script src="app.js"></script>
+
   </body>
 </html>
